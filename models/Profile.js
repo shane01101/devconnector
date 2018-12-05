@@ -74,7 +74,7 @@ const ProfileSchema = new Schema({
 				type: String,
 				required: true
 			},
-			fieldOfStudy: {
+			fieldofstudy: {
 				type: String,
 				required: true
 			},
@@ -109,11 +109,11 @@ const ProfileSchema = new Schema({
 		},
 		instagram: {
 			type: String
-		},
-		date: {
-			type: Date,
-			default: Date.now
 		}
+	},
+	date: {
+		type: Date,
+		default: Date.now
 	}
 });
 
