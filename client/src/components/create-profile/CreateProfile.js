@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
+import { createProfile } from '../../actions/profileActions';
 
 class CreateProfile extends Component {
 	constructor(props) {
@@ -16,7 +18,7 @@ class CreateProfile extends Component {
 			website: '',
 			location: '',
 			status: '',
-			skillslocation: '',
+			skills: '',
 			githubusername: '',
 			bio: '',
 			twitter: '',
@@ -26,17 +28,41 @@ class CreateProfile extends Component {
 			instagram: '',
 			errors: {}
 		};
+
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
-	onSubmit(event) {
-		event.preventDefault();
-		console.log('submit');
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.errors) {
+			this.setState({ errors: nextProps.errors });
+		}
 	}
 
-	onChange(event) {
-		this.setState({ [event.target.name]: event.target.value });
+	onSubmit(e) {
+		e.preventDefault();
+
+		const profileData = {
+			handle: this.state.handle,
+			company: this.state.company,
+			website: this.state.website,
+			location: this.state.location,
+			status: this.state.status,
+			skills: this.state.skills,
+			githubusername: this.state.githubusername,
+			bio: this.state.bio,
+			twitter: this.state.twitter,
+			facebook: this.state.facebook,
+			linkedin: this.state.linkedin,
+			youtube: this.state.youtube,
+			instagram: this.state.instagram
+		};
+
+		this.props.createProfile(profileData, this.props.history);
+	}
+
+	onChange(e) {
+		this.setState({ [e.target.name]: e.target.value });
 	}
 
 	render() {
@@ -121,7 +147,7 @@ class CreateProfile extends Component {
 								stand out
 							</p>
 							<small className="d-block pb-3">
-								* - required fields
+								* = required fields
 							</small>
 							<form onSubmit={this.onSubmit}>
 								<TextFieldGroup
@@ -190,18 +216,20 @@ class CreateProfile extends Component {
 									error={errors.bio}
 									info="Tell us a little about yourself"
 								/>
+
 								<div className="mb-3">
 									<button
+										type="button"
 										onClick={() => {
 											this.setState(prevState => ({
 												displaySocialInputs: !prevState.displaySocialInputs
 											}));
 										}}
-										className="btn-light"
+										className="btn btn-light"
 									>
-										Add Social Network links
+										Add Social Network Links
 									</button>
-									<spam className="text-muted">Optional</spam>
+									<span className="text-muted">Optional</span>
 								</div>
 								{socialInputs}
 								<input
@@ -218,7 +246,7 @@ class CreateProfile extends Component {
 	}
 }
 
-CreateProfile.PropTypes = {
+CreateProfile.propTypes = {
 	profile: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired
 };
@@ -228,4 +256,7 @@ const mapStateToProps = state => ({
 	errors: state.errors
 });
 
-export default connect(mapStateToProps)(CreateProfile);
+export default connect(
+	mapStateToProps,
+	{ createProfile }
+)(withRouter(CreateProfile));
