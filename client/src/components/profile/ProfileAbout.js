@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from '../../validation/is-empty';
+import Profile from './Profile';
 
 class ProfileAbout extends Component {
 	render() {
@@ -17,11 +18,13 @@ class ProfileAbout extends Component {
 		));
 
 		return (
-			<div class="row">
-				<div class="col-md-12">
-					<div class="card card-body bg-light mb-3">
-						<h3 class="text-center text-info">{name[0]}'s Bio</h3>
-						<p class="lead">
+			<div className="row">
+				<div className="col-md-12">
+					<div className="card card-body bg-light mb-3">
+						<h3 className="text-center text-info">
+							{name[0]}'s Bio
+						</h3>
+						<p className="lead">
 							{isEmpty(profile.bio) ? (
 								<span>{name[0]} does not have a bio</span>
 							) : (
@@ -29,9 +32,9 @@ class ProfileAbout extends Component {
 							)}
 						</p>
 						<hr />
-						<h3 class="text-center text-info">Skill Set</h3>
-						<div class="row">
-							<div class="d-flex flex-wrap justify-content-center align-items-center">
+						<h3 className="text-center text-info">Skill Set</h3>
+						<div className="row">
+							<div className="d-flex flex-wrap justify-content-center align-items-center">
 								{skills}
 							</div>
 						</div>
@@ -41,5 +44,9 @@ class ProfileAbout extends Component {
 		);
 	}
 }
+
+ProfileAbout.propTypes = {
+	profile: PropTypes.object.isRequired
+};
 
 export default ProfileAbout;
